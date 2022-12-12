@@ -9,11 +9,11 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
 
-// const OUTPUT_DIR = path.resolve(__dirname, "output");
-// const outputPath = path.join(OUTPUT_DIR, "team.html");
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-// const render = require("./lib/htmlGen");
-// const { default: NumberPrompt } = require("inquirer/lib/prompts/number");
+const initiateGenerator = require("./lib/htmlGen");
+const { default: NumberPrompt } = require("inquirer/lib/prompts/number");
 
 // Create an array of team members to verify and check if there are members or even a manager.
 const teamMembers = [];
@@ -47,18 +47,18 @@ function managerQuery() {
     .prompt([
       {
         type: "input",
-        name: "name",
-        message: "What is the name of the team manager?",
+        name: "firstName",
+        message: "What is the assigned Manager's first name?",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "What is the assigned Manager's last name?",
       },
       {
         type: "input",
         name: "id",
-        message: "Team Manager's ID number:",
-      },
-      {
-        type: "input",
-        name: "email",
-        message: "Team Manager's email address:",
+        message: "Provide the Managers ID number:",
       },
       {
         type: "input",
@@ -67,46 +67,61 @@ function managerQuery() {
       },
     ])
     .then((answer) => {
+      const managersEmail= `${answer.firstName}.${answer.lastName}@bulkacity.com` ;
+      console.log(`The manager's email is ${managersEmail}`);
       const manager = new Manager(
-        answer.name,
+        answer.firstName,
+        answer.lastName,
         answer.id,
-        answer.email,
-        answer.officeNumber
-      );
-      console.table(manager);
+        managersEmail,
+        answer.officeNumber);
+
       teamMembers.push(manager);
-      addTeamMember();
+      amountTeamMembers-=1;
+      
+      addTeamMember(amountTeamMembers);
     });
 }
 
-function addTeamMember() {
+function addTeamMember(remainingEmployees) {
+  console.log(`You have ${remainingEmployees} remaining Employees to input in the system`);
+  if (remainingEmployees>0){
   inquirer
     .prompt([
       {
         type: "list",
-        name: "what_type",
-        message: "Add an engineer or intern to the team?",
-        choices: ["Engineer", "Intern", "Not at this time"],
+        name: "emplType",
+        message: "Specify Employee type?",
+        choices: ["Engineer", "Intern"],
       },
     ])
     .then((answer) => {
-      if (answer.what_type === "Engineer") {
-        engineerQuery();
-      } else if (answer.what_type === "Intern") {
-        internQuery();
-      } else {
-        createFile();
+      if (answer.emplType === "Engineer") {
+        remainingEmployees -=1;
+        engineerQuery(remainingEmployees);
+      } else if (answer.emplType === "Intern") {
+        remainingEmployees -=1;
+        internQuery(remainingEmployees);
       }
     });
+} else {
+  console.log("You have no more employees left to input , HTML file will now be generated.")
+  createFile();
+}
 }
 
-function engineerQuery() {
+function engineerQuery(remainingEmployees) {
   inquirer
     .prompt([
       {
         type: "input",
-        name: "name",
-        message: "Engineer's name?",
+        name: "firstName",
+        message: "Engineer's first name?",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "Engineer's last name?",
       },
       {
         type: "input",
@@ -115,30 +130,36 @@ function engineerQuery() {
       },
       {
         type: "input",
-        name: "email",
-        message: "Engineer's email address:",
-      },
-      {
-        type: "input",
         name: "github",
         message: "What is the Engineer's GitHub Username?",
       },
     ])
     .then((answer) => {
-      const engineer = new Engineer(answer.name, answer.id, answer.email, answer.github);
-      console.table(engineer);
+      const engineersEmail= `${answer.firstName}.${answer.lastName}@bulkacity.com` ;
+      console.log(`The manager's email is ${engineersEmail}`);
+      const engineer = new Engineer(
+        answer.firstName, 
+        answer.lastName,
+        answer.id,  
+        engineersEmail,
+        answer.github);
       teamMembers.push(engineer);
-      addTeamMember();
+      addTeamMember(remainingEmployees);
     });
 }
 
-function internQuery() {
+function internQuery(remainingEmployees) {
   inquirer
     .prompt([
       {
         type: "input",
-        name: "name",
-        message: "Intern's name?",
+        name: "firstName",
+        message: "Intern's first name?",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "Intern's last name?",
       },
       {
         type: "input",
@@ -147,29 +168,31 @@ function internQuery() {
       },
       {
         type: "input",
-        name: "email",
-        message: "Intern's email address:",
-      },
-      {
-        type: "input",
         name: "school",
-        message: "What school does/did the intern attend?",
+        message: "Name of School attending?",
       },
     ])
     .then((answer) => {
-      const intern = new Intern(answer.name, answer.id, answer.email, answer.school);
-      console.table(intern)
+      const studentEmail= `${answer.firstName}.${answer.lastName}@bulkacity.com` ;
+      console.log(`The manager's email is ${studentEmail}`);
+      const intern = new Intern(
+        answer.firstName, 
+        answer.lastName, 
+        answer.id, 
+        studentEmail, 
+        answer.school);
       teamMembers.push(intern);
-      addTeamMember();
+      addTeamMember(remainingEmployees);
     });
 }
 
 function createFile() {
+  console.table(teamMembers);
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR);
   } else {
 
-    fs.writeFileSync(outputPath, render(teamMembers), "UTF-8");
+    fs.writeFileSync(outputPath, initiateGenerator.initiateGenerator(teamMembers), "UTF-8");
     console.log("File created in the output folder");
   }
   

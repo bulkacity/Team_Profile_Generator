@@ -190,10 +190,12 @@ function createFile() {
   console.table(teamMembers);
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR);
+    fs.writeFileSync(outputPath, initiateGenerator.initiateGenerator(teamMembers), "UTF-8");
+    console.log("Congratulations, you have successfully created a team");
   } else {
 
     fs.writeFileSync(outputPath, initiateGenerator.initiateGenerator(teamMembers), "UTF-8");
-    console.log("File created in the output folder");
+    console.log("Congratulations, you have successfully created a team");
   }
   
 }

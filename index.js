@@ -142,7 +142,7 @@ function engineerQuery(remainingEmployees) {
     ])
     .then((answer) => {
       const engineersEmail= `${answer.firstName}.${answer.lastName}@bulkacity.com` ;
-      console.log(green(`The manager's email is ${engineersEmail}`));
+      console.log(green(`The engineer's email is ${engineersEmail}`));
       const engineer = new Engineer(
         answer.firstName, 
         answer.lastName,
@@ -180,7 +180,7 @@ function internQuery(remainingEmployees) {
     ])
     .then((answer) => {
       const studentEmail= `${answer.firstName}.${answer.lastName}@bulkacity.com` ;
-      console.log(green(`The manager's email is ${studentEmail}`));
+      console.log(green(`The student's email is ${studentEmail}`));
       const intern = new Intern(
         answer.firstName, 
         answer.lastName, 

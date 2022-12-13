@@ -2,7 +2,7 @@
 
   The project is a command-line driven application, that shall be utilized along side your web app development process. A readme file with standard template will be generated and saved.
   
-  [A deployed version can be viewed here.](https://www.youtube.com/watch?v=R98qPgKgSi0)
+  [A deployed version can be viewed here.](https://bulkacity.github.io/Team_Profile_Generator/)
   
 ---
 # Contents
@@ -79,7 +79,7 @@ The application must have these classes: Employee, Manager, Engineer, and Intern
 
 ---
 ## YoutubeChannel
-   [Watch a video linked here :](https://www.youtube.com/watch?v=8u8TlOuPSG0)
+   [Watch a video linked here :](https://www.youtube.com/watch?v=R98qPgKgSi0)
 ---
 ## Contact Information:
 * GitHub Username: BulkAcity

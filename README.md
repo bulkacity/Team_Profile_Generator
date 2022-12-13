@@ -2,7 +2,7 @@
 
   The project is a command-line driven application, that shall be utilized along side your web app development process. A readme file with standard template will be generated and saved.
   
-  [A deployed version can be viewed here.](https://bulkacity.github.io/Team_Profile_Generator/)
+  [A deployed version can be viewed here.](https://www.youtube.com/watch?v=R98qPgKgSi0)
   
 ---
 # Contents
